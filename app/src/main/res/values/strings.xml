@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">BossDoy\nKaraoke_Now</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_0">0</string>
+    <string name="tab_text_A">A</string>
+    <string name="tab_text_B">B</string>
+    <string name="tab_text_C">C</string>
+    <string name="tab_text_D">D</string>
+    <string name="tab_text_E">E</string>
+    <string name="tab_text_F">F</string>
+    <string name="tab_text_G">G</string>
+    <string name="tab_text_H">H</string>
+    <string name="tab_text_I">I</string>
+    <string name="tab_text_J">J</string>
+    <string name="tab_text_K">K</string>
+    <string name="tab_text_L">L</string>
+    <string name="tab_text_M">M</string>
+    <string name="tab_text_N">N</string>
+    <string name="tab_text_O">O</string>
+    <string name="tab_text_P">P</string>
+    <string name="tab_text_Q">Q</string>
+    <string name="tab_text_R">R</string>
+    <string name="tab_text_S">S</string>
+    <string name="tab_text_T">T</string>
+    <string name="tab_text_U">U</string>
+    <string name="tab_text_V">V</string>
+    <string name="tab_text_W">W</string>
+    <string name="tab_text_X">X</string>
+    <string name="tab_text_Y">Y</string>
+    <string name="tab_text_Z">Z</string>
+    <string name="main_menu">Menu</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="wifi_direct">Wi-Fi Direct</string>
+    <string name="bluetooth">Bluetooth</string>
+</resources>
