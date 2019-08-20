@@ -18,7 +18,9 @@ import com.toks23.karaoke_now.command.service.WifiCommandService
 
 class MainActivity : AppCompatActivity() {
 
-    private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
+    //private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
+    private var wifiCommandService: WifiCommandService? = null
+    private var listview: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,12 @@ class MainActivity : AppCompatActivity() {
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         tabs.tabMode = TabLayout.MODE_SCROLLABLE
+
+        listview = this.findViewById(R.id.list_view) as? ListView
+
+        wifiCommandService?.WifiCommandService(this, listview!!)
+        wifiCommandService?.startScan()
+
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
         fab.setOnClickListener { view ->
@@ -50,12 +58,9 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-        val listview = this.findViewById(R.id.list_view) as? ListView
-        when (id) {
+
+        when (item.itemId) {
             R.id.connect_wifi -> {
-                var wifiCommandService = WifiCommandService()
-                wifiCommandService.WifiCommandService(this, listview)
                 showDialog(this, listview)
                 return true
             }
