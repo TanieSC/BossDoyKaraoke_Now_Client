@@ -3,6 +3,7 @@ package com.toks23.karaoke_now
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -15,10 +16,18 @@ import com.toks23.karaoke_now.ui.main.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.AdapterView
 import com.toks23.karaoke_now.command.service.WifiCommandService
+import com.toks23.karaoke_now.model.SongList
+import java.util.ArrayList
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
     private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
+    private var wifiCommandService: WifiCommandService? = null
+    private lateinit var listview: ListView
+
+    private val mainSongList = ArrayList<ArrayList<SongList>>()
+    private var exit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,12 @@ class MainActivity : AppCompatActivity() {
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         tabs.tabMode = TabLayout.MODE_SCROLLABLE
+
+        listview = this.findViewById(R.id.list_view) as ListView
+
+        wifiCommandService?.WifiCommandService(this, listview!!)
+        wifiCommandService?.startScan()
+
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
         fab.setOnClickListener { view ->
@@ -50,12 +65,9 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-        val listview = this.findViewById(R.id.list_view) as? ListView
-        when (id) {
+
+        when (item.itemId) {
             R.id.connect_wifi -> {
-                var wifiCommandService = WifiCommandService()
-                wifiCommandService.WifiCommandService(this, listview)
                 showDialog(this, listview)
                 return true
             }
@@ -71,6 +83,20 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        if (exit) {
+            finish() // finish activity
+            Handler().postDelayed({ exitProcess(0) }, (3 * 1000).toLong())
+        } else {
+            Toast.makeText(
+                this, "Press Back again to Exit.",
+                Toast.LENGTH_SHORT
+            ).show()
+            exit = true
+            Handler().postDelayed({ exit = false }, (3 * 1000).toLong())
+        }
+    }
+
     private fun showDialog(activity: Activity, listView: ListView?) {
         val dialog = Dialog(activity)
         dialog.setCancelable(false)
@@ -80,8 +106,8 @@ class MainActivity : AppCompatActivity() {
         btndialog.setOnClickListener { dialog.dismiss() }
 
 
-       // val arrayAdapter = ArrayAdapter(this, R.layout.list_item, R.id.tv, myImageNameList)
-       // listview.adapter = arrayAdapter
+        val arrayAdapter = ArrayAdapter(this, R.layout.list_item, R.id.tv, myImageNameList)
+        listview.adapter = arrayAdapter
 
         listView?.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
            // Toast.makeText(activity,"You have clicked : " + myImageNameList[position],Toast.LENGTH_LONG).show()
