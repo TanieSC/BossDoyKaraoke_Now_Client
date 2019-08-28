@@ -15,7 +15,6 @@ import android.widget.*
 import com.toks23.karaoke_now.ui.main.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.AdapterView
-import com.toks23.karaoke_now.command.service.WifiCommandService
 import com.toks23.karaoke_now.model.SongList
 import java.util.ArrayList
 import kotlin.system.exitProcess
@@ -23,7 +22,6 @@ import kotlin.system.exitProcess
 class MainActivity : AppCompatActivity() {
 
     private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
-    private var wifiCommandService: WifiCommandService? = null
     private lateinit var listview: ListView
 
     private val mainSongList = ArrayList<ArrayList<SongList>>()
@@ -42,9 +40,6 @@ class MainActivity : AppCompatActivity() {
         tabs.tabMode = TabLayout.MODE_SCROLLABLE
 
         listview = this.findViewById(R.id.list_view) as ListView
-
-        wifiCommandService?.WifiCommandService(this, listview!!)
-        wifiCommandService?.startScan()
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
 

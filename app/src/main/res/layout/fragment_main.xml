@@ -21,4 +21,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout"/>
 
+    <include layout="@layout/content_song_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
