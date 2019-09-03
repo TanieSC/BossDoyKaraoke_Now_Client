@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
     private lateinit var listview: ListView
 
-    private val mainSongList = ArrayList<ArrayList<SongList>>()
+    private val mainSongList : List<List<SongList>> = ArrayList<ArrayList<SongList>>()
     private var exit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
