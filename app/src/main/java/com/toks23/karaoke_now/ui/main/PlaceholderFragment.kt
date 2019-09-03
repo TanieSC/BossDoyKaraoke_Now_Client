@@ -8,17 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
-import kotlinx.android.synthetic.main.content_song_listitem.view.*
 import java.io.*
 import java.util.*
 
@@ -84,19 +81,17 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
                     while ((s = br.readLine()) != null) {
                         try {
                             // String file_extn = s.substring(s.lastIndexOf(".")).trim();
-                            if (!s.substring(s.lastIndexOf(".")).trim { it <= ' ' }.isEmpty()) {
+                            if (s.substring(s.lastIndexOf(".")).trim().isNotEmpty()) {
                                 val songList = SongList()
-                                val song = s.substring(s.lastIndexOf("\\") + 1, s.length - 4)
-                                    .trim { it <= ' ' }
+                                val song = s.substring(s.lastIndexOf("\\") + 1, s.length - 4).trim()
 
-                                songList.songTitle = (song.substring(song.lastIndexOf(" - ") + 2).trim { it <= ' ' })
+                                songList.songTitle = song.substring(song.lastIndexOf(" - ") + 2).trim()
                                 songList.songArtist = song
                                 songList.songFilename = s
                                 songList.songFilePath = s
 
                                 songsViewModelList.add(songList)
 
-                                // Log.d("all_songs", song);
                             }
 
                         } catch (iode: StringIndexOutOfBoundsException) {
@@ -111,7 +106,7 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
 
             songsViewModelList.sortWith(Comparator { obj1, obj2 ->
                 // ## Ascending order
-                obj1.songTitle.compareTo(obj2.songArtist, true)
+                obj1.songTitle.compareTo(obj2.songTitle, true)
             })
 
 

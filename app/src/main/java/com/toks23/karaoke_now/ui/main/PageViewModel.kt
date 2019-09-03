@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.toks23.karaoke_now.model.SongList
 
 class PageViewModel : ViewModel() {
 
@@ -12,7 +13,7 @@ class PageViewModel : ViewModel() {
     //val text: LiveData<String> = Transformations.map(_index) {
     //    "Hello world from section: $it"
     //}
-    val type: LiveData<String> = Transformations.map(_index) {
+    val type: LiveData<SongList> = Transformations.map(_index) {
         "Hello world from section: $it"
     }
     val title: LiveData<String> = Transformations.map(_index) {
