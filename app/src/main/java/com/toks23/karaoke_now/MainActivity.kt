@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
         tabs.tabMode = TabLayout.MODE_SCROLLABLE
 
-        listview = this.findViewById(R.id.list_view) as ListView
+       // listview = this.findViewById(R.id.list_view) as ListView
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
@@ -63,15 +63,15 @@ class MainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.connect_wifi -> {
-                showDialog(this, listview)
+               // showDialog(this, listview)
                 return true
             }
             R.id.connect_wifi_direct -> {
-                showDialog(this, listview)
+               // showDialog(this, listview)
                 return true
             }
             R.id.connect_bluetooth -> {
-                showDialog(this, listview)
+               // showDialog(this, listview)
                 return true
             }
         }
