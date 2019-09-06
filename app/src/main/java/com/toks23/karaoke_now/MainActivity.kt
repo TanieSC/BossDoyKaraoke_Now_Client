@@ -2,6 +2,7 @@ package com.toks23.karaoke_now
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,6 +17,9 @@ import com.toks23.karaoke_now.ui.main.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.AdapterView
 import com.toks23.karaoke_now.model.SongList
+import java.io.File
+import java.io.FilenameFilter
+import java.io.IOException
 import java.util.ArrayList
 import kotlin.system.exitProcess
 
@@ -47,6 +51,13 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+       // try {
+            copyFileFromAssets()
+       // } catch (e: IOException) {
+       //     e.printStackTrace()
+       // }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -91,6 +102,46 @@ class MainActivity : AppCompatActivity() {
             Handler().postDelayed({ exit = false }, (3 * 1000).toLong())
         }
     }
+
+   // @Throws(IOException::class)
+    private fun copyFileFromAssets() {
+
+        val myInput = assets.open("Toks.bkN")
+
+        val audioFilter = object : FilenameFilter {
+            lateinit var f: File
+
+            override fun accept(dir: File, name: String): Boolean {
+                if (name.toLowerCase().endsWith(".bkn")) {
+                    return true
+                }
+                f = File(dir.absolutePath + "/" + name)
+                return f.isDirectory
+            }
+        }
+
+        val path = filesDir.list(audioFilter)
+
+        if (path!!.isEmpty() || path != null) {
+
+            // Log.i("FileExist", "False");
+            val fos = openFileOutput("Toks.bkN", Context.MODE_PRIVATE)
+
+
+            val buffer = ByteArray(1024)
+            var length = 0
+            while ({length = myInput.read(buffer); length}() > 0) {
+                fos.write(buffer, 0, length)
+            }
+            myInput.close()
+            fos.flush()
+            fos.close()
+        } else {
+
+            // Log.i("FileExist", "True");
+        }
+    }
+
 
     private fun showDialog(activity: Activity, listView: ListView?) {
         val dialog = Dialog(activity)

@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
@@ -45,11 +48,8 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
         super.onCreate(savedInstanceState)
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
-       }
+        }
 
-       // pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
-           // loadSongs()
-      //  }
     }
 
     override fun onCreateView(
@@ -58,14 +58,13 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
     ): View? {
         val root = inflater.inflate(R.layout.fragment_main, container, false)
         val textView: TextView = root.findViewById(R.id.section_label)
-        //pageViewModel.text.observe(this, Observer<String> {
-        //    textView.text = it
-        //})
 
+
+        LoadSongsInBackGround(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         pageViewModel.index.observe(this, Observer<Int> {
 
-            recyclerView = root.findViewById(R.id.songList) as RecyclerView
-            LoadSongsInBackGround(context)
+           // recyclerView = root.findViewById(R.id.songList) as RecyclerView
+            //Log.d("all_songs", "allsongs  $it")
 
         })
            /* when (it) {
@@ -240,16 +239,14 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
     }
 
     private fun generateSongList(file_extension: String): ArrayList<ArrayList<SongList>>? {
-        val songs : ArrayList<SongList> = ArrayList()
-        val songsViewModelList : ArrayList<ArrayList<SongList>> = ArrayList(27)
+        val songsViewModelList = ArrayList<ArrayList<SongList>>(0)
 
         try {
             var s: String? = null
             val allsongs = activity?.filesDir?.listFiles { pathname -> pathname.path.endsWith(file_extension) }
-
             if (allsongs != null) {
                 for (i in allsongs.indices) {
-                    Log.d("all_songs", allsongs?.get(i)?.name)
+
                     val fis = activity?.openFileInput(allsongs?.get(i)?.name)
                     val br = BufferedReader(InputStreamReader(fis))
 
@@ -305,13 +302,13 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
                 }
             }
 
-            for(i in 0..songsViewModelList.size)
+           /* for(i in 0..songsViewModelList.size)
             {
                 songsViewModelList[i].sortWith(Comparator { obj1, obj2 ->
                     // ## Ascending order
                     obj1.songTitle.compareTo(obj2.songTitle, true)
                 })
-            }
+            }*/
 
             return songsViewModelList
 
@@ -323,36 +320,52 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
 
     }
 
+    fun setupRecyclerView(@NonNull recyclerView: RecyclerView, data: ArrayList<SongList>) {
+        recyclerView.adapter = null
+        recyclerView.setHasFixedSize(true)
+        assert(recyclerView != null)
+        val mLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = mLayoutManager
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.itemAnimator = DefaultItemAnimator()
 
-    internal class LoadSongsInBackGround(context: Context?) : AsyncTask<String, Void, List<List<SongList>>>()
-    {
+        var rva = RecyclerViewSongsAdapter(context,  data)
+        recyclerView.adapter = rva
+    }
+
+    inner class LoadSongsInBackGround(private val context: Context?) : AsyncTask<String, Void, ArrayList<ArrayList<SongList>>>() {
         lateinit var aDialog : AlertDialog
         lateinit var builder : AlertDialog.Builder
         lateinit var textView : TextView
-        var context : Context? = context
         var dialogMsg : String = "Loading. Please wait..."
         var searchListLength: Int = 0
 
         override fun onPreExecute() {
             super.onPreExecute()
-            textView = R.id.dialogMsg as TextView
+            //textView = findViewById(R.id.dialogMsg)
             builder = AlertDialog.Builder(this.context!!)
             builder.setCancelable(false)
             builder.setView(R.layout.loading_dialog)
-            textView.text = dialogMsg
+           // textView.text = dialogMsg
             aDialog = builder.create()
             aDialog.show()
         }
 
-        override fun doInBackground(vararg p0: String?): List<List<SongList>> {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun doInBackground(vararg p0: String?): ArrayList<ArrayList<SongList>>? {
+            //val songs :  ArrayList<ArrayList<SongList>> = ArrayList()
+            return generateSongList(".bkN")
         }
 
-        override fun onPostExecute(result: List<List<SongList>>) {
+        override fun onPostExecute(result: ArrayList<ArrayList<SongList>>) {
             if (aDialog.isShowing) {
                 aDialog.dismiss()
             }
-            //setupRecyclerView(recyclerView, result)
+
+            for (i in 0..result.size)
+            {
+                setupRecyclerView(recyclerView, result[i])
+            }
+
         }
 
     }
