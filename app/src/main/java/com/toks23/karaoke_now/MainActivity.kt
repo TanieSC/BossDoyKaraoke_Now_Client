@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
     private lateinit var listview: ListView
 
-    private val mainSongList : List<List<SongList>> = ArrayList<ArrayList<SongList>>()
     private var exit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,15 +52,6 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-
-       // try {
-            copyFileFromAssets()
-       // } catch (e: IOException) {
-       //     e.printStackTrace()
-       // }
-
-      //  BackGroundTaskService(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -106,46 +96,6 @@ class MainActivity : AppCompatActivity() {
             Handler().postDelayed({ exit = false }, (3 * 1000).toLong())
         }
     }
-
-   // @Throws(IOException::class)
-    private fun copyFileFromAssets() {
-
-        val myInput = assets.open("Toks.bkN")
-
-        val audioFilter = object : FilenameFilter {
-            lateinit var f: File
-
-            override fun accept(dir: File, name: String): Boolean {
-                if (name.toLowerCase().endsWith(".bkn")) {
-                    return true
-                }
-                f = File(dir.absolutePath + "/" + name)
-                return f.isDirectory
-            }
-        }
-
-        val path = filesDir.list(audioFilter)
-
-        if (path!!.isEmpty() || path != null) {
-
-            // Log.i("FileExist", "False");
-            val fos = openFileOutput("Toks.bkN", Context.MODE_PRIVATE)
-
-
-            val buffer = ByteArray(1024)
-            var length = 0
-            while ({length = myInput.read(buffer); length}() > 0) {
-                fos.write(buffer, 0, length)
-            }
-            myInput.close()
-            fos.flush()
-            fos.close()
-        } else {
-
-            // Log.i("FileExist", "True");
-        }
-    }
-
 
     private fun showDialog(activity: Activity, listView: ListView?) {
         val dialog = Dialog(activity)

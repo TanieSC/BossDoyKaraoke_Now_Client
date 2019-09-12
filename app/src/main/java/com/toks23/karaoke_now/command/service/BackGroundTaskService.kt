@@ -17,26 +17,21 @@ import com.toks23.karaoke_now.model.SongList
 import com.toks23.karaoke_now.songCollections
 import com.toks23.karaoke_now.ui.main.PageViewModel
 import com.toks23.karaoke_now.ui.main.RecyclerViewSongsAdapter
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import java.io.*
 
 class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String, Void, ArrayList<ArrayList<SongList>>>() {
 
-    private lateinit var _splashScreen : Activity
     private lateinit var _splashScreenIntent : Intent
 
     override fun onPreExecute() {
-
         _splashScreenIntent = Intent(
             activity,
             MainActivity::class.java
         )
-
     }
 
     override fun doInBackground(vararg p0: String?): ArrayList<ArrayList<SongList>>? {
-        return generateSongList(".bkN")
+        return copyFileFromAssets()
     }
 
     override fun onPostExecute(result: ArrayList<ArrayList<SongList>>) {
@@ -45,10 +40,41 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
         activity?.finish()
     }
 
-    fun splashScreenFinish(activity: Activity, intent: Intent)
-    {
-        _splashScreen = activity
-        _splashScreenIntent = intent
+    private fun copyFileFromAssets() : ArrayList<ArrayList<SongList>>? {
+
+        val myInput =  activity?.assets?.open("Toks.bkN")
+        val audioFilter = object : FilenameFilter {
+            lateinit var f: File
+
+            override fun accept(dir: File, name: String): Boolean {
+                if (name.toLowerCase().endsWith(".bkn")) {
+                    return true
+                }
+                f = File(dir.absolutePath + "/" + name)
+                return f.isDirectory
+            }
+        }
+        val path = activity?.filesDir?.list(audioFilter)
+
+        if (path!!.isEmpty() || path != null) {
+
+            // Log.i("FileExist", "False");
+            val fos = activity?.openFileOutput("Toks.bkN", Context.MODE_PRIVATE)
+            val buffer = ByteArray(1024)
+            var length = 0
+
+            while ({length = myInput!!.read(buffer); length}() > 0) {
+                fos?.write(buffer, 0, length)
+            }
+            myInput?.close()
+            fos?.flush()
+            fos?.close()
+        } else {
+
+            // Log.i("FileExist", "True");
+        }
+
+       return generateSongList(".bkN")
     }
 
     private fun generateSongList(file_extension: String): ArrayList<ArrayList<SongList>>? {
@@ -60,9 +86,9 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
         try {
             var s: String? = null
             val allsongs = activity?.filesDir?.listFiles { pathname -> pathname.path.endsWith(file_extension) }
+
             if (allsongs != null) {
                 for (i in allsongs.indices) {
-
                     val fis = activity?.openFileInput(allsongs?.get(i)?.name)
                     val br = BufferedReader(InputStreamReader(fis))
 
@@ -71,8 +97,8 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
                             if (s?.substring(s!!.lastIndexOf("."))?.trim()!!.isNotEmpty()) {
                                 val songList = SongList()
                                 val song = s!!.substring(s!!.lastIndexOf("\\") + 1, s!!.length - 4).trim()
-
                                 val title = song.lastIndexOf(" - ")
+
                                 if(title == -1) {
                                     songList.songTitle = song
                                 }
