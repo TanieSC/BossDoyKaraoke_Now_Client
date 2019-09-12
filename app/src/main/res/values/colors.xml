@@ -7,4 +7,5 @@
     <color name="black_overlay">#66000000</color>
     <color name="fileTypeBGmp3">#c40101</color>
     <color name="fileTypeBGmp4">#0006c7</color>
+    <color name="transparent">#00000000</color>
 </resources>
