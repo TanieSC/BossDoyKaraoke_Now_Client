@@ -4,20 +4,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Handler
+import com.toks23.karaoke_now.command.service.BackGroundTaskService
 
 class SplashScreenActivity : AppCompatActivity() {
     private val SPLASH_SCREEN_TIME_OUT = 2000L
+    lateinit var backGroundTaskService : BackGroundTaskService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        //    WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         setContentView(R.layout.activity_splash_screen)
 
-        Handler().postDelayed( {
+        backGroundTaskService = BackGroundTaskService(this)
+        backGroundTaskService.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+       // backGroundTaskService.splashScreenFinish(this, i)
+
+
+        /* Handler().postDelayed( {
             val i = Intent(
                 this@SplashScreenActivity,
                 MainActivity::class.java
@@ -29,6 +33,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
             finish()
             //the current activity will get finished.
-        }, SPLASH_SCREEN_TIME_OUT)
+        }, SPLASH_SCREEN_TIME_OUT)*/
     }
 }

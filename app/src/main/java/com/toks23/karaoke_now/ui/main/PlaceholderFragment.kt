@@ -1,6 +1,5 @@
 package com.toks23.karaoke_now.ui.main
 
-import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,15 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
+import com.toks23.karaoke_now.songCollections
 import java.io.*
-//import java.util.*
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener  {
 
-   lateinit var recyclerView : RecyclerView
+    lateinit var recyclerView : RecyclerView
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -46,10 +44,11 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0)
+            loadSongs(songCollections)
         }
-
     }
 
     override fun onCreateView(
@@ -59,315 +58,135 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
         val root = inflater.inflate(R.layout.fragment_main, container, false)
         val textView: TextView = root.findViewById(R.id.section_label)
 
-
-        LoadSongsInBackGround(context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-        pageViewModel.index.observe(this, Observer<Int> {
-
-           // recyclerView = root.findViewById(R.id.songList) as RecyclerView
-            //Log.d("all_songs", "allsongs  $it")
+        pageViewModel.index.observe(this, Observer{
+            pageViewModel.songs.observe(this, Observer {data ->
+                when (it) {
+                    0 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    1 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    2 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    3 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    4 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    5 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    6 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    7 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    8 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    9 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    10 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    11 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    12 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    13 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    14 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    15 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    16 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    17 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    18 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    19 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    20 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    21 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    22 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    23 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    24 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    25 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                    26 -> {
+                        recyclerView = root.findViewById(R.id.songList) as RecyclerView
+                        setupRecyclerView(recyclerView, data[it])
+                    }
+                }
+            })
 
         })
-           /* when (it) {
-                0 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                1 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                2 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                3 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                4 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                5 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                6 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                7 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                8 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                9 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                10 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                11 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                12 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                13 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                14 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                15 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                16 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                17 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                18 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                19 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                20 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                21 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                22 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                23 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                24 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                25 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-                26 -> {
-                    pageViewModel.text.observe(this, Observer<String> { its ->
-                        textView.text = its
-                    })
-                    //return true
-                }
-
-            }
-        })*/
-
 
         return root
     }
 
-    private fun generateSongList(file_extension: String): ArrayList<ArrayList<SongList>>? {
-        val songsViewModelList = ArrayList<ArrayList<SongList>>(0)
-
-        try {
-            var s: String? = null
-            val allsongs = activity?.filesDir?.listFiles { pathname -> pathname.path.endsWith(file_extension) }
-            if (allsongs != null) {
-                for (i in allsongs.indices) {
-
-                    val fis = activity?.openFileInput(allsongs?.get(i)?.name)
-                    val br = BufferedReader(InputStreamReader(fis))
-
-                    while ({s = br.readLine(); s}() != null) {
-                        try {
-                            if (s?.substring(s!!.lastIndexOf("."))?.trim()!!.isNotEmpty()) {
-                                val songList = SongList()
-                                val song = s!!.substring(s!!.lastIndexOf("\\") + 1, s!!.length - 4).trim()
-
-                                songList.songTitle = song.substring(song.lastIndexOf(" - ") + 2).trim()
-                                songList.songArtist = song
-                                songList.songFilename = s as String
-                                songList.songFilePath = s as String
-
-                                when(songList.songTitle[0].toLowerCase().toString())
-                                {
-                                    "a" -> { songsViewModelList[1].add(songList) }
-                                    "b" -> { songsViewModelList[2].add(songList) }
-                                    "c" -> { songsViewModelList[3].add(songList) }
-                                    "d" -> { songsViewModelList[4].add(songList) }
-                                    "e" -> { songsViewModelList[5].add(songList) }
-                                    "f" -> { songsViewModelList[6].add(songList) }
-                                    "g" -> { songsViewModelList[7].add(songList) }
-                                    "h" -> { songsViewModelList[8].add(songList) }
-                                    "i" -> { songsViewModelList[9].add(songList) }
-                                    "j" -> { songsViewModelList[10].add(songList) }
-                                    "k" -> { songsViewModelList[11].add(songList) }
-                                    "l" -> { songsViewModelList[12].add(songList) }
-                                    "m" -> { songsViewModelList[13].add(songList) }
-                                    "n" -> { songsViewModelList[14].add(songList) }
-                                    "o" -> { songsViewModelList[15].add(songList) }
-                                    "p" -> { songsViewModelList[16].add(songList) }
-                                    "q" -> { songsViewModelList[17].add(songList) }
-                                    "r" -> { songsViewModelList[18].add(songList) }
-                                    "s" -> { songsViewModelList[19].add(songList) }
-                                    "t" -> { songsViewModelList[20].add(songList) }
-                                    "u" -> { songsViewModelList[21].add(songList) }
-                                    "v" -> { songsViewModelList[22].add(songList) }
-                                    "w" -> { songsViewModelList[23].add(songList) }
-                                    "x" -> { songsViewModelList[24].add(songList) }
-                                    "y" -> { songsViewModelList[25].add(songList) }
-                                    "z" -> { songsViewModelList[26].add(songList) }
-                                    else -> { songsViewModelList[0].add(songList) }
-                                }
-
-                            }
-
-                        } catch (iode: StringIndexOutOfBoundsException) {
-
-                        }
-                    }
-                    br.close()
-                }
-            }
-
-           /* for(i in 0..songsViewModelList.size)
-            {
-                songsViewModelList[i].sortWith(Comparator { obj1, obj2 ->
-                    // ## Ascending order
-                    obj1.songTitle.compareTo(obj2.songTitle, true)
-                })
-            }*/
-
-            return songsViewModelList
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Log.i("Data :", "FILE - false")
-            return null
-        }
-
-    }
-
-    fun setupRecyclerView(@NonNull recyclerView: RecyclerView, data: ArrayList<SongList>) {
+    private fun setupRecyclerView(@NonNull recyclerView: RecyclerView, data: ArrayList<SongList>) {
         recyclerView.adapter = null
         recyclerView.setHasFixedSize(true)
         assert(recyclerView != null)
         val mLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = mLayoutManager
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.itemAnimator = DefaultItemAnimator()
 
         var rva = RecyclerViewSongsAdapter(context,  data)
         recyclerView.adapter = rva
-    }
-
-    inner class LoadSongsInBackGround(private val context: Context?) : AsyncTask<String, Void, ArrayList<ArrayList<SongList>>>() {
-        lateinit var aDialog : AlertDialog
-        lateinit var builder : AlertDialog.Builder
-        lateinit var textView : TextView
-        var dialogMsg : String = "Loading. Please wait..."
-        var searchListLength: Int = 0
-
-        override fun onPreExecute() {
-            super.onPreExecute()
-            //textView = findViewById(R.id.dialogMsg)
-            builder = AlertDialog.Builder(this.context!!)
-            builder.setCancelable(false)
-            builder.setView(R.layout.loading_dialog)
-           // textView.text = dialogMsg
-            aDialog = builder.create()
-            aDialog.show()
-        }
-
-        override fun doInBackground(vararg p0: String?): ArrayList<ArrayList<SongList>>? {
-            //val songs :  ArrayList<ArrayList<SongList>> = ArrayList()
-            return generateSongList(".bkN")
-        }
-
-        override fun onPostExecute(result: ArrayList<ArrayList<SongList>>) {
-            if (aDialog.isShowing) {
-                aDialog.dismiss()
-            }
-
-            for (i in 0..result.size)
-            {
-                setupRecyclerView(recyclerView, result[i])
-            }
-
-        }
-
     }
 
     companion object {

@@ -3,6 +3,7 @@ package com.toks23.karaoke_now
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,6 +17,7 @@ import android.widget.*
 import com.toks23.karaoke_now.ui.main.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.AdapterView
+import com.toks23.karaoke_now.command.service.BackGroundTaskService
 import com.toks23.karaoke_now.model.SongList
 import java.io.File
 import java.io.FilenameFilter
@@ -57,6 +59,8 @@ class MainActivity : AppCompatActivity() {
        // } catch (e: IOException) {
        //     e.printStackTrace()
        // }
+
+      //  BackGroundTaskService(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
 
     }
 
