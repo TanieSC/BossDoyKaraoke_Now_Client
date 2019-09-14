@@ -40,8 +40,7 @@
                 tools:context="com.toks23.karaoke_now.MainActivity"
                 tools:listitem="@layout/content_song_listitem"
                 android:clipChildren="false"
-                android:clipToPadding="false"
-                />
+                android:clipToPadding="false" />
 
     </LinearLayout>
 
