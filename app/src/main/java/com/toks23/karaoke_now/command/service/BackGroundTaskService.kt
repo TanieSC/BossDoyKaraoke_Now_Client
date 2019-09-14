@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
+import android.os.Handler
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.lifecycle.LifecycleOwner
@@ -21,6 +22,7 @@ import java.io.*
 
 class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String, Void, ArrayList<ArrayList<SongList>>>() {
 
+    private val SPLASH_SCREEN_TIME_OUT = 2000L
     private lateinit var _splashScreenIntent : Intent
 
     override fun onPreExecute() {
@@ -36,8 +38,11 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
 
     override fun onPostExecute(result: ArrayList<ArrayList<SongList>>) {
         songCollections = result
-        activity?.startActivity(_splashScreenIntent)
-        activity?.finish()
+
+        Handler().postDelayed({
+            activity?.startActivity(_splashScreenIntent)
+            activity?.finish()
+        }, SPLASH_SCREEN_TIME_OUT)
     }
 
     private fun copyFileFromAssets() : ArrayList<ArrayList<SongList>>? {
