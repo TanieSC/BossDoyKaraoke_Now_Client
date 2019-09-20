@@ -31,7 +31,7 @@
         <item name="android:editTextColor">@color/colorPrimary</item>
     </style>
 
-    <style name="ProgressBarColor" parent="Theme.AppCompat.Light">
+    <style name="ProgressBarColor" parent="@style/Widget.AppCompat.ProgressBar">
         <item name="colorAccent">@color/colorProgressBar</item>
     </style>
 

@@ -8,7 +8,7 @@ import android.app.Activity
 
 
 class WifiCommandService{
-    private val constants: ConstantsCommandService? = ConstantsCommandService()
+    private val constants: ConstantsService? = ConstantsService()
     private val MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1
     private var wifiList: ListView? = null
     private var wifiManager: WifiManager? = null

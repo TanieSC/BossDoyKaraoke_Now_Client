@@ -7,17 +7,19 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Handler
 import com.toks23.karaoke_now.command.service.BackGroundTaskService
+import com.toks23.karaoke_now.command.service.ConstantsService
 
 class SplashScreenActivity : AppCompatActivity() {
     private val SPLASH_SCREEN_TIME_OUT = 2000L
-    lateinit var backGroundTaskService : BackGroundTaskService
+    private val _constants = ConstantsService()
+    private lateinit var _backGroundTaskService : BackGroundTaskService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-        backGroundTaskService = BackGroundTaskService(this)
-        backGroundTaskService.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        _backGroundTaskService = BackGroundTaskService(this, _constants.GET_ALL_SONGS)
+        _backGroundTaskService.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
        // backGroundTaskService.splashScreenFinish(this, i)
 
 

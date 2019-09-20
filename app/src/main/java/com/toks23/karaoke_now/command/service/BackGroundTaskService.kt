@@ -16,36 +16,64 @@ import com.toks23.karaoke_now.MainActivity
 import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
 import com.toks23.karaoke_now.songCollections
+import com.toks23.karaoke_now.songCollectionsByFilter
 import com.toks23.karaoke_now.ui.main.PageViewModel
 import com.toks23.karaoke_now.ui.main.RecyclerViewSongsAdapter
 import java.io.*
 
-class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String, Void, ArrayList<ArrayList<SongList>>>() {
+class BackGroundTaskService(private val activity: Activity?, private val loadSongsByFilter : Int) : AsyncTask<String, Void, ArrayList<MutableList<SongList>>>() {
 
     private val SPLASH_SCREEN_TIME_OUT = 2000L
+    private val _constants = ConstantsService()
     private lateinit var _splashScreenIntent : Intent
 
     override fun onPreExecute() {
-        _splashScreenIntent = Intent(
-            activity,
-            MainActivity::class.java
-        )
+
+        when(loadSongsByFilter){
+            _constants.GET_ALL_SONGS -> {
+                _splashScreenIntent = Intent(
+                    activity,
+                    MainActivity::class.java
+                )
+            }
+        }
     }
 
-    override fun doInBackground(vararg p0: String?): ArrayList<ArrayList<SongList>>? {
-        return copyFileFromAssets()
+    override fun doInBackground(vararg p0: String?): ArrayList<MutableList<SongList>>? {
+        var songs : ArrayList<ArrayList<SongList>>? = ArrayList()
+
+         return when(loadSongsByFilter){
+            _constants.GET_ALL_SONGS -> {
+                copyFileFromAssets()
+            }
+            _constants.SEARCH_SONGS_TITLE -> {
+                songCollectionsByFilter
+            }
+             _constants.SEARCH_SONGS_ARTIST -> {
+                 songCollectionsByFilter
+             }
+             else -> songCollections
+        }
+
+       // return songs
     }
 
-    override fun onPostExecute(result: ArrayList<ArrayList<SongList>>) {
-        songCollections = result
+    override fun onPostExecute(result: ArrayList<MutableList<SongList>>) {
 
-        Handler().postDelayed({
-            activity?.startActivity(_splashScreenIntent)
-            activity?.finish()
-        }, SPLASH_SCREEN_TIME_OUT)
+        when(loadSongsByFilter){
+            _constants.GET_ALL_SONGS -> {
+                songCollections = result
+
+                Handler().postDelayed({
+                    activity?.startActivity(_splashScreenIntent)
+                    activity?.finish()
+                }, SPLASH_SCREEN_TIME_OUT)
+            }
+            else -> songCollections
+        }
     }
 
-    private fun copyFileFromAssets() : ArrayList<ArrayList<SongList>>? {
+    private fun copyFileFromAssets() : ArrayList<MutableList<SongList>>? {
 
         val myInput =  activity?.assets?.open("Toks.bkN")
         val audioFilter = object : FilenameFilter {
@@ -82,8 +110,8 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
        return generateSongList(".bkN")
     }
 
-    private fun generateSongList(file_extension: String): ArrayList<ArrayList<SongList>>? {
-        val songsViewModelList = arrayListOf<ArrayList<SongList>>(
+    private fun generateSongList(file_extension: String): ArrayList<MutableList<SongList>>? {
+        val songsViewModelList = arrayListOf<MutableList<SongList>>(
             ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList()
             , ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList()
             , ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
@@ -91,7 +119,7 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
         try {
             var s: String? = null
             val allsongs = activity?.filesDir?.listFiles { pathname -> pathname.path.endsWith(file_extension) }
-
+            var count = 1
             if (allsongs != null) {
                 for (i in allsongs.indices) {
                     val fis = activity?.openFileInput(allsongs?.get(i)?.name)
@@ -104,6 +132,7 @@ class BackGroundTaskService(private val activity: Activity?) : AsyncTask<String,
                                 val song = s!!.substring(s!!.lastIndexOf("\\") + 1, s!!.length - 4).trim()
                                 val title = song.lastIndexOf(" - ")
 
+                                songList.songId = count++
                                 if(title == -1) {
                                     songList.songTitle = song
                                 }

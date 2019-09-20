@@ -14,7 +14,7 @@ import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
 import kotlinx.android.synthetic.main.content_song_listitem.view.*
 
-class RecyclerViewSongsAdapter(private val context: Context?, private val songs : ArrayList<SongList>) : RecyclerView.Adapter<RecyclerViewSongsAdapter.ViewHolder>() {
+class RecyclerViewSongsAdapter(private val context: Context?, private val songs : List<SongList>) : RecyclerView.Adapter<RecyclerViewSongsAdapter.ViewHolder>() {
 
     private lateinit var animation: Animation
 

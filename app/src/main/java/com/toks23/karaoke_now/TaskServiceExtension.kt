@@ -5,12 +5,21 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.toks23.karaoke_now.model.SongList
 
-private lateinit var songsList : ArrayList<ArrayList<SongList>>
+private lateinit var _songsList : ArrayList<MutableList<SongList>>
+private lateinit var _songsListByFilter : ArrayList<MutableList<SongList>>
 
-var songCollections : ArrayList<ArrayList<SongList>>
+var songCollections : ArrayList<MutableList<SongList>>
     get() {
-        return songsList
+        return _songsList
     }
     set(value) {
-        songsList = value
+        _songsList = value
+    }
+
+var songCollectionsByFilter : ArrayList<MutableList<SongList>>
+    get() {
+        return _songsListByFilter
+    }
+    set(value) {
+        _songsListByFilter = value
     }
