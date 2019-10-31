@@ -1,11 +1,13 @@
 package com.toks23.karaoke_now.ui.main
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.Filter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +16,11 @@ import com.toks23.karaoke_now.R
 import com.toks23.karaoke_now.model.SongList
 import kotlinx.android.synthetic.main.content_song_listitem.view.*
 
-class RecyclerViewSongsAdapter(private val context: Context?, private val songs : List<SongList>) : RecyclerView.Adapter<RecyclerViewSongsAdapter.ViewHolder>() {
+class RecyclerViewSongsAdapter(private val context: Context?, private var songs : List<SongList>) : RecyclerView.Adapter<RecyclerViewSongsAdapter.ViewHolder>() {
 
     private lateinit var animation: Animation
+
+    var filteredList: List<SongList> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.content_song_listitem, parent, false))
@@ -51,6 +55,11 @@ class RecyclerViewSongsAdapter(private val context: Context?, private val songs 
         }
     }
 
+    fun filterList(filteredSongList: List<SongList>) {
+        songs = filteredSongList
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val songId : TextView  = itemView.songId
         val songTitle : TextView = itemView.songTitle
@@ -58,4 +67,5 @@ class RecyclerViewSongsAdapter(private val context: Context?, private val songs 
         val songFileType : TextView = itemView.extension_type
         val songfilePath : TextView = itemView.songPath
     }
+
 }
