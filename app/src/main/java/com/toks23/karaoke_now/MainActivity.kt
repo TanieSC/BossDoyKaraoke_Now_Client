@@ -25,9 +25,13 @@ import java.io.FilenameFilter
 import java.io.IOException
 import java.util.ArrayList
 import kotlin.system.exitProcess
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.util.Log
+
 
 class MainActivity : AppCompatActivity() {
-
     private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Carrera", "Ferrari", "Harly", "Lamborghini", "Silver")
     private lateinit var listview: ListView
 
@@ -42,9 +46,32 @@ class MainActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
+       // viewPager.currentItem = 0
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
         tabs.tabMode = TabLayout.MODE_SCROLLABLE
+
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+               // viewPager.currentItem = tab.position
+                searchInTabPage = tab.position
+
+               // viewPager.currentItem = searchInTabPage
+
+                Log.d("currentItem", "${viewPager.currentItem}")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
+
+       // viewPager.addOnAdapterChangeListener(new )
 
        // listview = this.findViewById(R.id.list_view) as ListView
 
@@ -54,13 +81,6 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu to use in the action bar
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

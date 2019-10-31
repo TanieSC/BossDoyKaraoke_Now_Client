@@ -8,6 +8,7 @@ import android.os.Handler
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,7 @@ import com.toks23.karaoke_now.ui.main.PageViewModel
 import com.toks23.karaoke_now.ui.main.RecyclerViewSongsAdapter
 import java.io.*
 
-class BackGroundTaskService(private val activity: Activity?, private val loadSongsByFilter : Int) : AsyncTask<String, Void, ArrayList<MutableList<SongList>>>() {
+class BackGroundTaskService(private val activity: Activity?, private val loadSongsByFilter : Int) : AsyncTask<String, Void, MutableList<MutableList<SongList>>>() {
 
     private val SPLASH_SCREEN_TIME_OUT = 2000L
     private val _constants = ConstantsService()
@@ -39,26 +40,26 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
         }
     }
 
-    override fun doInBackground(vararg p0: String?): ArrayList<MutableList<SongList>>? {
+    override fun doInBackground(vararg p0: String?): MutableList<MutableList<SongList>>? {
         var songs : ArrayList<ArrayList<SongList>>? = ArrayList()
 
-         return when(loadSongsByFilter){
-            _constants.GET_ALL_SONGS -> {
-                copyFileFromAssets()
-            }
-            _constants.SEARCH_SONGS_TITLE -> {
-                songCollectionsByFilter
-            }
+         return when(loadSongsByFilter) {
+             _constants.GET_ALL_SONGS -> {
+                 copyFileFromAssets()
+             }
+             _constants.SEARCH_SONGS_TITLE -> {
+                 songCollectionsByFilter
+             }
              _constants.SEARCH_SONGS_ARTIST -> {
                  songCollectionsByFilter
              }
              else -> songCollections
-        }
+         }
 
        // return songs
     }
 
-    override fun onPostExecute(result: ArrayList<MutableList<SongList>>) {
+    override fun onPostExecute(result: MutableList<MutableList<SongList>>) {
 
         when(loadSongsByFilter){
             _constants.GET_ALL_SONGS -> {
@@ -73,7 +74,7 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
         }
     }
 
-    private fun copyFileFromAssets() : ArrayList<MutableList<SongList>>? {
+    private fun copyFileFromAssets() : MutableList<MutableList<SongList>>? {
 
         val myInput =  activity?.assets?.open("Toks.bkN")
         val audioFilter = object : FilenameFilter {
@@ -91,7 +92,6 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
 
         if (path!!.isEmpty() || path != null) {
 
-            // Log.i("FileExist", "False");
             val fos = activity?.openFileOutput("Toks.bkN", Context.MODE_PRIVATE)
             val buffer = ByteArray(1024)
             var length = 0
@@ -110,11 +110,11 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
        return generateSongList(".bkN")
     }
 
-    private fun generateSongList(file_extension: String): ArrayList<MutableList<SongList>>? {
-        val songsViewModelList = arrayListOf<MutableList<SongList>>(
-            ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList()
-            , ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList()
-            , ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList(), ArrayList())
+    private fun generateSongList(file_extension: String): MutableList<MutableList<SongList>>? {
+        val songsViewModelList = mutableListOf<MutableList<SongList>>(
+            mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            , mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            , mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
 
         try {
             var s: String? = null
