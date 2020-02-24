@@ -43,7 +43,7 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
     override fun doInBackground(vararg p0: String?): MutableList<MutableList<SongList>>? {
         var songs : ArrayList<ArrayList<SongList>>? = ArrayList()
 
-         return when(loadSongsByFilter) {
+         /*return when(loadSongsByFilter) {
              _constants.GET_ALL_SONGS -> {
                  copyFileFromAssets()
              }
@@ -54,9 +54,9 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
                  songCollectionsByFilter
              }
              else -> songCollections
-         }
+         }*/
 
-       // return songs
+        return  copyFileFromAssets()
     }
 
     override fun onPostExecute(result: MutableList<MutableList<SongList>>) {
@@ -189,6 +189,8 @@ class BackGroundTaskService(private val activity: Activity?, private val loadSon
                  songsViewModelList[i-1].sortWith(Comparator { obj1, obj2 ->
                      // ## Ascending order
                      obj1.songTitle.compareTo(obj2.songTitle, true)
+
+                    // Log.d("SONGLISTVIEW", obj1.songTitle)
                  })
              }
 

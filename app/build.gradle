@@ -35,6 +35,8 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0'
 /*    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0'
     implementation "io.reactivex.rxjava2:rxkotlin:2.2.0"*/
+   // implementation 'com.android.support:support-v4:29.+'
+   // implementation 'com.android.support:recyclerview-v7:29.+'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

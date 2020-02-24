@@ -36,18 +36,23 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
     private val _constants = ConstantsService()
     private var _loadSongsByFilter : Int = -1
     private lateinit var _searchView: SearchView
-    private lateinit var _rva: RecyclerViewSongsAdapter
+    private lateinit var _rva: RecyclerViewSongsAdapter // = null
     private lateinit var _recyclerView : RecyclerView
     private lateinit var pageViewModel: PageViewModel
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       // if(TextUtils.isEmpty(query)){
+            Log.d("SONGTITLE ", query)
+        //}
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-       // loadQueryWithDelay(newText, 0)
-        filter(newText!!,searchInTabPage)
+        // loadQueryWithDelay(newText, 0)
+        //if(_rva != null) {
+           _rva.filter?.filter(newText)
+       // }
         return true
     }
 
@@ -58,12 +63,9 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
             loadSongs(arguments?.getInt(ARG_SECTION_NUMBER) ?: 0, songCollections)
         }
-
     }
 
     override fun onCreateView(
@@ -71,126 +73,125 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_main, container, false)
-
         _loadSongsByFilter = _constants.SEARCH_SONGS_TITLE
+
+        _searchView = activity?.findViewById(R.id.search_songs) as SearchView
+        _searchView.setOnQueryTextListener(this)
 
         pageViewModel.index.observe(this, Observer{
 
             pageViewModel.songs.observe(this, Observer {data ->
-                _searchView = activity?.findViewById(R.id.search_songs) as SearchView
-                _searchView.setOnQueryTextListener(this)
-                _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                setupRecyclerView(_recyclerView, data[it])
-/*                when (it) {
+
+                when (it) {
                     0 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     1 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     2 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     3 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     4 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     5 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     6 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     7 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     8 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     9 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     10 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     11 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     12 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     13 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     14 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     15 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     16 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     17 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     18 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     19 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     20 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     21 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     22 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     23 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     24 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     25 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
                     26 -> {
                         _recyclerView = root.findViewById(R.id.songList) as RecyclerView
-                        setupRecyclerView(_recyclerView, data[it])
+                        setupRecyclerView(_recyclerView, data[it], it)
                     }
-                }*/
+                }
             })
 
         })
@@ -199,7 +200,7 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
     }
 
 
-    private fun filter(text: String, selectedTab : Int){
+    private fun filter(text: String, selectedTab : Int ){
 
         val filteredSongs: MutableList<SongList> = ArrayList()
 
@@ -212,9 +213,8 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
         }
 
 
-        //calling a method of the adapter class and passing the filtered list
-        _rva.filterList(filteredSongs)
-        //setupRecyclerView(_recyclerView, filteredSongs)
+        Log.d("selectedTab ", selectedTab.toString())
+
     }
 
     private fun loadQueryWithDelay(query: String?, delay: Long) {
@@ -241,15 +241,14 @@ class PlaceholderFragment : Fragment(), SearchView.OnQueryTextListener, AdapterV
 
     }
 
-    private fun setupRecyclerView(@NonNull recyclerView: RecyclerView, data: List<SongList>) {
+    private fun setupRecyclerView(@NonNull recyclerView: RecyclerView, data: List<SongList>, it: Int) {
         recyclerView.adapter = null
         recyclerView.setHasFixedSize(true)
         assert(recyclerView != null)
         val mLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = mLayoutManager
         recyclerView.itemAnimator = DefaultItemAnimator()
-
-        _rva = RecyclerViewSongsAdapter(context,  data)
+        _rva = RecyclerViewSongsAdapter(context, data)
         recyclerView.adapter = _rva
     }
 

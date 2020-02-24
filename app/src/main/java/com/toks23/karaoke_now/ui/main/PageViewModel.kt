@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import com.toks23.karaoke_now.model.SongList
 
 class PageViewModel : ViewModel() {
-
     private val _index = MutableLiveData<Int>()
     private var _songList = MutableLiveData<MutableList<MutableList<SongList>>>()
     var _filteredSongs =  MutableLiveData<MutableList<MutableList<SongList>>>()
@@ -32,7 +31,6 @@ class PageViewModel : ViewModel() {
         _oldFilteredSongs.value = songs
     }
 
-
     fun search(text: String, selectedTab : Int){
 
         val filteredSongs : MutableList<SongList> = mutableListOf()
@@ -40,7 +38,7 @@ class PageViewModel : ViewModel() {
         val songs : List<SongList> = _songList.value!![selectedTab]
 
         for (eachSong in songs) {
-            if (eachSong.songTitle!!.toLowerCase().contains(text.toLowerCase()) || eachSong.songArtist!!.toLowerCase().contains(text.toLowerCase())) {
+            if (eachSong.songTitle.toLowerCase().contains(text.toLowerCase()) || eachSong.songArtist.toLowerCase().contains(text.toLowerCase())) {
                 filteredSongs.add(eachSong)
             }
         }

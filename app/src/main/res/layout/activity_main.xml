@@ -20,7 +20,7 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_songs"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
             </androidx.appcompat.widget.SearchView>
 
